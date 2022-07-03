@@ -25,3 +25,11 @@ create database mdb_test;
 # assign user to db
 GRANT ALL PRIVILEGES ON DATABASE mdb_test to test_user;
 ```
+
+## connection string example
+
+```text
+"dbname={DB_NAME} user={DB_USER} password={DB_PWD} host={DB_HOST} port={DB_PORT}"
+
+"postgresql://postgres@127.0.0.1:6543"
+```
