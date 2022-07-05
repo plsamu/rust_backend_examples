@@ -9,13 +9,8 @@ use dotenv::dotenv;
 fn main() {
     dotenv().ok(); // ENV
     mdb::load_from_schema();
-}
-
-/*
-fn hello_world(name: Option<&str>) -> String {
-    match name {
-        Some(n) => format!("Hello, World {n}"),
-        None => format!("Who are you?"),
+    match mserver::init() {
+        Ok(()) => println!("Server closed without errors"),
+        Err(e) => println!("{}", e)
     }
 }
-*/
