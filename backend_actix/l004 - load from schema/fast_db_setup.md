@@ -53,3 +53,10 @@ create database mdb_test;
 # assign user to db
 GRANT ALL PRIVILEGES ON DATABASE mdb_test to test_user;
 ```
+
+## Check Table
+
+```bash
+psql -h 127.0.0.1 -p 6543 -U test_user mdb_test 
+\dt     ||      \dt+
+```
