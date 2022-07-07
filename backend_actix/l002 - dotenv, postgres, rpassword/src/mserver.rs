@@ -1,6 +1,5 @@
 use actix_web::{
     get,
-    http::{header::ContentType, StatusCode},
     web::ServiceConfig,
     App, Error, HttpRequest, HttpResponse, HttpServer,
 };
@@ -18,10 +17,6 @@ async fn index(req: HttpRequest) -> Result<HttpResponse, Error> {
     Ok(HttpResponse::Ok().body("Hello world!"))
 }
 
-pub fn configure(cfg: &mut ServiceConfig) {
-    cfg.service(index);
-}
-
 #[actix_rt::main]
 pub async fn init() -> std::io::Result<()> {
     // SERVER
@@ -30,3 +25,9 @@ pub async fn init() -> std::io::Result<()> {
         .run()
         .await
 }
+
+#[allow(dead_code)]
+pub fn configure(cfg: &mut ServiceConfig) {
+    cfg.service(index);
+}
+

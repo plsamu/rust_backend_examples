@@ -1,6 +1,5 @@
 use actix_web::{
     get,
-    http::{header::ContentType, StatusCode},
     web::ServiceConfig,
     App, Error, HttpRequest, HttpResponse, HttpServer,
 };
@@ -16,7 +15,7 @@ async fn index(req: HttpRequest) -> Result<HttpResponse, Error> {
         req.path()                      // /
     );
 
-    let rows = mdb::get_event().await;
+    let _rows = mdb::get_event().await;
 
     Ok(HttpResponse::Ok().body("Hello world!"))
 }

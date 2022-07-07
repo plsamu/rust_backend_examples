@@ -1,6 +1,6 @@
 use postgres::{Client, NoTls};
 use rpassword::read_password;
-use std::{env, io::Write};
+use std::{io::Write};
 
 use crate::mutils::concat_and_consume;
 

@@ -1,4 +1,4 @@
-use std::{env, fs, ptr::null};
+use std::{env, fs};
 use tokio_postgres::{Client, NoTls};
 
 async fn get_conn() -> Client {
@@ -34,10 +34,6 @@ pub async fn load_from_schema() {
     let schema = fs::read_to_string("./sql/schema.sql").expect("Unable to read file");
     let conn = get_conn().await;
     conn.batch_execute(&schema).await.unwrap();
-}
-
-pub fn test() {
-    let mut conn = get_conn();
 }
 
 pub async fn get_event() -> Vec<tokio_postgres::Row> {
