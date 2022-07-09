@@ -1,15 +1,13 @@
 extern crate tokio_postgres;
 
-mod constant;
-mod mdb;
+mod mdatabase;
 mod mserver;
-mod api;
-mod mutils;
+mod mutil;
 use dotenv::dotenv;
 
 fn main() {
     dotenv().ok();
-    match mserver::init() {
+    match mserver::mserver::init() {
         Ok(()) => println!("Server closed without errors"),
         Err(e) => println!("{}", e),
     }
