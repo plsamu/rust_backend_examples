@@ -3,6 +3,7 @@ extern crate tokio_postgres;
 mod mdatabase;
 mod mserver;
 mod mutil;
+mod json_parser;
 use dotenv::dotenv;
 
 fn main() {

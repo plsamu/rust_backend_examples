@@ -696,6 +696,8 @@ dependencies = [
  "actix-web",
  "dotenv",
  "rpassword",
+ "serde",
+ "serde_json",
  "tokio",
  "tokio-postgres",
 ]
@@ -924,6 +926,8 @@ dependencies = [
  "bytes",
  "fallible-iterator",
  "postgres-protocol",
+ "serde",
+ "serde_json",
 ]
 
 [[package]]
