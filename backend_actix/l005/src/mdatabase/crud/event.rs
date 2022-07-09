@@ -1,3 +1,7 @@
+use std::fs;
+
+use crate::mdatabase::mdb::get_conn;
+
 pub async fn get_event() -> Vec<tokio_postgres::Row> {
     let get_event_query = fs::read_to_string("./sql/get_event.sql").expect("Unable to read file");
     let conn = get_conn().await;

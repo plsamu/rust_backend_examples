@@ -1,7 +1,7 @@
 use std::{env, fs, ptr::null};
 use tokio_postgres::{Client, NoTls};
 
-async fn get_conn() -> Client {
+pub async fn get_conn() -> Client {
     let dbname: String = env::var("DB_NAME").expect("Please set db name in .env");
     let user: String = env::var("DB_USER").expect("Please set user in .env");
     let password: String = env::var("DB_PWD").expect("Please set password in .env");
