@@ -14,7 +14,7 @@ use crate::{
 
 #[get("/")]
 pub async fn index(req: HttpRequest) -> Result<Json<Vec<Event>>, Error> {
-    insert_event("21 luglio biglietti flixbus").await;
-    let rows = get_events().await;
+    insert_event("21 luglio biglietti flixbus").await?; // with ?, this will return an AppError
+    let rows = get_events().await?;
     Ok(json_parser::event::get_json(rows))
 }

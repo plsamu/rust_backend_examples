@@ -1,7 +1,9 @@
 use std::{env, fs, ptr::null};
 use tokio_postgres::{Client, NoTls};
 
-pub async fn get_conn() -> Client {
+use crate::errors::{AppError, AppErrorType};
+
+pub async fn get_conn() -> Result<Client, AppError> {
     let dbname: String = env::var("DB_NAME").expect("Please set db name in .env");
     let user: String = env::var("DB_USER").expect("Please set user in .env");
     let password: String = env::var("DB_PWD").expect("Please set password in .env");
@@ -19,7 +21,9 @@ pub async fn get_conn() -> Client {
         .replace("{DB_HOST}", &host)
         .replace("{DB_PORT}", &port_str);
 
-    let (client, connection) = tokio_postgres::connect(&conn_string, NoTls).await.unwrap();
+    let (client, connection) = tokio_postgres::connect(&conn_string, NoTls)
+        .await
+        .map_err(|err| AppError::internal_error("get_conn", err))?; // ? will return the AppError
 
     tokio::spawn(async move {
         if let Err(e) = connection.await {
@@ -27,13 +31,31 @@ pub async fn get_conn() -> Client {
         }
     });
 
-    client
+    Ok(client)
 }
 
+/**
+ * ========================================
+ * BAD example of AppError use
+ *  - this is not an API request
+ *  - this code come before the server is ON
+ *  - just use a normal Result<(), Error>
+ * ========================================
+ */
 pub async fn load_from_schema() {
-    let schema = fs::read_to_string("./sql/schema.sql").expect("Unable to read file");
-    let conn = get_conn().await;
-    conn.batch_execute(&schema).await.unwrap();
+    let schema = fs::read_to_string("./sql/schema.sql").map_err(|err| AppError {
+        message: Some("unable to read file".to_string()),
+        cause: Some(err.to_string()),
+        error_type: AppErrorType::DbError,
+    });
+
+    match schema {
+        Ok(schema) => {
+            let conn = get_conn().await.unwrap();
+            conn.batch_execute(&schema).await.unwrap();
+        }
+        Err(err) => println!("{}", err),
+    }
 }
 
 pub fn test() {

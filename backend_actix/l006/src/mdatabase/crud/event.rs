@@ -1,22 +1,27 @@
 use std::fs;
 
-use crate::mdatabase::mdb::get_conn;
+use crate::{errors::AppError, mdatabase::mdb::get_conn};
 
-pub async fn insert_event(name: &str) -> u64 {
-    let insert_event_query =
-        fs::read_to_string("./sql/event/insert_event.sql").expect("Unable to read file");
-    let conn = get_conn().await;
-    conn.execute(&insert_event_query, &[&name, &"".as_bytes()])
+pub async fn insert_event(name: &str) -> Result<u64, AppError> {
+    let insert_event_query = fs::read_to_string("./sql/event/insert_event.sql")
+        .map_err(|err| AppError::internal_error("insert_event", err))?; // ? will return the AppError
+
+    let conn = get_conn().await?;
+    Ok(conn
+        .execute(&insert_event_query, &[&name, &"".as_bytes()])
         .await
-        .unwrap()
+        .map_err(|err| AppError::db_error("insert_event", err))?)
 }
 
-pub async fn get_events() -> Vec<tokio_postgres::Row> {
-    let get_events_query =
-        fs::read_to_string("./sql/event/get_events.sql").expect("Unable to read file");
-    let conn = get_conn().await;
+pub async fn get_events() -> Result<Vec<tokio_postgres::Row>, AppError> {
+    let get_events_query = fs::read_to_string("./sql/event/get_events.sql")
+        .map_err(|err| AppError::internal_error("get_events", err))?; // ? will return the AppError
 
-    let rows = conn.query(&get_events_query, &[]).await.unwrap();
+    let conn = get_conn().await?;
+    let rows = conn
+        .query(&get_events_query, &[])
+        .await
+        .map_err(|err| AppError::db_error("get_events", err))?;
 
     for row in &rows {
         let id: i32 = row.get(0);
@@ -25,5 +30,5 @@ pub async fn get_events() -> Vec<tokio_postgres::Row> {
 
         println!("found event: {} {} {:?}", id, name, data);
     }
-    rows
+    Ok(rows)
 }
