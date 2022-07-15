@@ -1,0 +1,1 @@
+INSERT INTO event (name, data) VALUES ($1, $2)

@@ -1,11 +1,10 @@
-use actix_files as fs;
+use actix_files::{Files, NamedFile};
 use actix_web::{
     get,
     http::{header::ContentType, StatusCode},
     web::ServiceConfig,
     App, Error, HttpRequest, HttpResponse, HttpServer,
 };
-use fs::NamedFile;
 
 #[get("/test")]
 async fn test(req: HttpRequest) -> Result<HttpResponse, Error> {
@@ -29,7 +28,7 @@ async fn index(req: HttpRequest) -> Result<NamedFile, Error> {
 pub fn configure(cfg: &mut ServiceConfig) {
     cfg
     .service(index) // this first
-    .service(fs::Files::new("/", "./static"));
+    .service(Files::new("/", "./static"));
 }
 
 #[actix_rt::main]
