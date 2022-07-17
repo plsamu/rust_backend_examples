@@ -34,8 +34,8 @@ pub struct UserId {
 
 #[get("/register")]
 pub async fn register(req: HttpRequest) -> Result<Json<UserId>, Error> {
-    println!("{:?}", chrono::offset::Local::now()); // 2022-07-15T01:05:39.028665800+02:00
-    println!("{:?}", chrono::offset::Utc::now()); // 2022-07-14T23:05:39.029221200Z
+    println!("{:?}", chrono::offset::Local::now()); // 2022-07-17T14:34:23.319398600+02:00
+    println!("{:?}", chrono::offset::Utc::now()); // 2022-07-17T12:34:23.320272700Z
     let now = SystemTime::now().duration_since(UNIX_EPOCH).unwrap();
     let uuid4_tmp = Uuid::new_v4();
     let new_id = now.as_millis().to_string() + "-" + &uuid4_tmp.to_string(); // create user_id
