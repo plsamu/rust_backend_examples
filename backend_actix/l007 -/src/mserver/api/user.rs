@@ -10,13 +10,6 @@ use crate::{
     mdatabase::{crud, mdb},
 };
 
-#[get("/")]
-pub async fn index(req: HttpRequest) -> Result<Json<Vec<Event>>, Error> {
-    crud::event::insert_event("21 luglio biglietti flixbus").await?; // with ?, this will return an AppError
-    let rows = crud::event::get_events().await?;
-    Ok(json_parser::event::get_json(rows))
-}
-
 #[get("/subscriptions")]
 pub async fn subscriptions(req: HttpRequest) -> Result<Json<Vec<User>>, Error> {
     let conn = mdb::get_conn().await?;

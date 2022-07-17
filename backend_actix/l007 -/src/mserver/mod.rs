@@ -6,8 +6,9 @@ use crate::{mdatabase::mdb, mutil::constant};
 
 pub fn configure(cfg: &mut ServiceConfig) {
     cfg.service(api::index)
-    .service(api::register)
-    .service(api::subscriptions);
+        .service(api::user::register)
+        .service(api::user::subscriptions)
+        .service(api::event::post_event);
 }
 
 #[actix_rt::main]
