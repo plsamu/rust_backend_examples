@@ -1,0 +1,1 @@
+INSERT INTO my_schema.user (user_id) VALUES ($1)

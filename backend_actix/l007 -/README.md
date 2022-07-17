@@ -1,3 +1,6 @@
 # l007
 
-[ ] authentication
+- POST request authenticated
+  - time instant
+  - uuid4
+  - new user

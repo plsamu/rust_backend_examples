@@ -1,1 +1,1 @@
-SELECT * from event;
+SELECT * from my_schema.event;
